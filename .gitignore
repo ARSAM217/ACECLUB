@@ -1,0 +1,20 @@
+.env
+node_modules/
+data/
+uploads/
+
+.env
+node_modules/
+data/
+uploads/
+
+# Private configuration and user data
+.env
+data/
+uploads/
+node_modules/
+*.sqlite
+*.sqlite3
+*.db
+*.db-shm
+*.db-wal

@@ -1,0 +1,25 @@
+{
+  "name": "ace-club-social",
+  "version": "1.0.3",
+  "private": true,
+  "description": "ACE CLUB social and chat app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check server.js && node --check public/app.js && node --check public/classic-game.js && node --check public/namefamile-game.js && node --check public/connect-game.js && node scripts/release-smoke-check.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.7",
+    "express": "^4.21.2",
+    "express-rate-limit": "^7.5.0",
+    "express-session": "^1.18.1",
+    "helmet": "^8.0.0",
+    "multer": "^1.4.5-lts.1",
+    "socket.io": "^4.8.1",
+    "sql.js": "^1.13.0"
+  },
+  "engines": {
+    "node": "24.x"
+  }
+}

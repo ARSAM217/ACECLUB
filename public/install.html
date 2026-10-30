@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#10101b"><title>نصب ACE CLUB</title>
+<style>
+:root{color-scheme:dark;font-family:Tahoma,Arial,sans-serif;background:#0d0d16;color:#f8f7ff}*{box-sizing:border-box}
+body{margin:0;min-height:100vh;display:grid;place-items:center;padding:18px;background:radial-gradient(ellipse at top,#29204b 0,transparent 58%),#0d0d16}
+.card{width:min(100%,430px);border:1px solid #ffffff20;border-radius:25px;padding:25px;background:#171622eF;box-shadow:0 25px 80px #0008}
+.logo{width:70px;height:70px;margin:auto;border-radius:22px;display:grid;place-items:center;background:linear-gradient(135deg,#b78aff,#6e4de6);font-weight:900;font-size:22px;box-shadow:0 10px 30px #8855ff55}
+h1{text-align:center;font-size:23px;margin:17px 0 8px}.sub{text-align:center;color:#bdb8d0;font-size:13px;line-height:1.9;margin:0 0 20px}
+.info{display:grid;grid-template-columns:1fr 1fr;gap:10px}.item{padding:12px;border-radius:14px;background:#ffffff08;border:1px solid #ffffff12}.label{font-size:11px;color:#aaa4bf}.value{font-size:14px;font-weight:bold;margin-top:7px;overflow-wrap:anywhere}
+button,.back{width:100%;border:0;border-radius:13px;padding:14px;margin-top:14px;background:linear-gradient(100deg,#a96cff,#7054ef);color:white;font-weight:bold;font-size:14px;cursor:pointer;text-decoration:none;display:block;text-align:center}
+button:disabled{opacity:.5;cursor:wait}.progress{height:7px;background:#ffffff18;border-radius:9px;overflow:hidden;margin-top:17px;display:none}.bar{height:100%;width:0;background:#b88cff;transition:width .12s}.status{font-size:12px;color:#bcb6cf;line-height:1.8;margin-top:10px;min-height:20px}.back{background:#ffffff0b;border:1px solid #ffffff18;margin-top:9px;font-weight:normal}.fine{font-size:11px;color:#9d97b3;line-height:1.9;margin:14px 0 0}
+</style></head>
+<body><main class="card">
+<div class="logo">ACE</div><h1>نصب اپلیکیشن ACE CLUB</h1><p class="sub">نسخه رسمی ایس کلاب را دانلود کن و برای نصب، تأیید نهایی را در خود اندروید انجام بده.</p>
+<div class="info"><div class="item"><div class="label">نسخه</div><div class="value" id="version">در حال بررسی…</div></div><div class="item"><div class="label">حجم فایل</div><div class="value" id="size">—</div></div></div>
+<button id="download" disabled>بررسی نسخه…</button><div class="progress" id="progress"><div class="bar" id="bar"></div></div><div class="status" id="status" role="status"></div>
+<a class="back" href="/">بازگشت به ACE CLUB</a><p class="fine">پس از دانلود، فایل APK را باز کن. ممکن است اندروید اجازه نصب از این منبع را بخواهد؛ فقط در صورت اعتماد به فایل، اجازه بده. نصب خودکار بدون تأیید اندروید امکان‌پذیر نیست.</p>
+</main><script>
+const $=id=>document.getElementById(id);let release=null;
+async function load(){try{const r=await fetch('/api/app-release',{cache:'no-store'});const d=await r.json();if(!r.ok)throw Error(d.error||'نسخه‌ای برای دانلود موجود نیست');release=d;$('version').textContent=d.version;$('size').textContent=d.sizeLabel||`${(d.size_bytes/1048576).toFixed(2)} MB`;$('download').textContent='دانلود اپلیکیشن';$('download').disabled=false;$('status').textContent='نسخه آماده دانلود است.'}catch(e){$('version').textContent='ناموجود';$('status').textContent=e.message;$('download').textContent='نسخه در دسترس نیست'}}
+$('download').addEventListener('click',async()=>{if(!release)return;const b=$('download');b.disabled=true;$('progress').style.display='block';$('bar').style.width='0%';$('status').textContent='در حال دانلود…';try{const r=await fetch(release.downloadUrl);if(!r.ok)throw Error('دانلود فایل ناموفق بود');const total=Number(r.headers.get('content-length'))||release.size_bytes;let received=0;const reader=r.body.getReader(),chunks=[];while(true){const {done,value}=await reader.read();if(done)break;chunks.push(value);received+=value.length;$('bar').style.width=Math.min(100,received/total*100)+'%';$('status').textContent=`دانلود ${(received/1048576).toFixed(1)} از ${(total/1048576).toFixed(1)} مگابایت`;}const blob=new Blob(chunks,{type:'application/vnd.android.package-archive'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download=`ACE-CLUB-${release.version}.apk`;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);$('status').textContent='دانلود کامل شد. فایل را از اعلان دانلودها باز کن و مراحل اندروید را تأیید کن.';$('bar').style.width='100%'}catch(e){$('status').textContent=e.message}finally{b.disabled=false}});
+load();
+</script></body></html>
